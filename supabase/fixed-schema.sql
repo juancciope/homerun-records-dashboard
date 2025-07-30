@@ -1,4 +1,4 @@
--- Home Run Records Multi-Tenant Database Schema
+-- Home Run Records Multi-Tenant Database Schema (Fixed)
 -- This schema supports agency-level multi-tenancy with artist sub-accounts
 
 -- Enable necessary extensions
@@ -392,6 +392,3 @@ INSERT INTO users (email, first_name, last_name, role) VALUES
 -- Insert sample agency
 INSERT INTO agencies (name, slug) VALUES
 ('Demo Agency', 'demo-agency');
-
--- Get the agency ID for further inserts
--- (In real implementation, you'd use the actual ID from the insert)

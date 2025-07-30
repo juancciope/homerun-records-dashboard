@@ -2,6 +2,7 @@
 
 import { Agency, MultiTenantArtist, AgencyAnalytics } from '@/lib/types/multi-tenant';
 import Link from 'next/link';
+import Image from 'next/image';
 import { formatNumber } from '@/lib/utils/formatters';
 
 interface AgencyDashboardProps {
@@ -12,7 +13,8 @@ interface AgencyDashboardProps {
 }
 
 export default function AgencyDashboard({ agency, artists, analytics, userRole }: AgencyDashboardProps) {
-  const activeArtists = artists.filter(artist => artist.is_active);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const activeArtists = artists.filter(artist => (artist as any).is_active);
   const totalStreams = analytics?.totalStreams || 0;
   const totalFans = analytics?.totalFans || 0;
 
@@ -63,7 +65,7 @@ export default function AgencyDashboard({ agency, artists, analytics, userRole }
         {artists.length >= agency.settings.features.maxArtists && (
           <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
             <p className="text-amber-800 text-sm">
-              You've reached your artist limit. Upgrade your plan to add more artists.
+              You&apos;ve reached your artist limit. Upgrade your plan to add more artists.
             </p>
           </div>
         )}
@@ -95,7 +97,7 @@ export default function AgencyDashboard({ agency, artists, analytics, userRole }
                 key={artist.id}
                 artist={artist}
                 agencySlug={agency.slug}
-                userRole={userRole}
+                _userRole={userRole}
               />
             ))}
           </div>
@@ -173,42 +175,47 @@ function StatCard({ title, value, icon, trend }: {
   );
 }
 
-function ArtistCard({ artist, agencySlug, userRole }: {
+function ArtistCard({ artist, agencySlug, _userRole }: {
   artist: MultiTenantArtist & { tenants: { id: string; slug: string; is_active: boolean }[] };
   agencySlug: string;
-  userRole: string;
+  _userRole: string;
 }) {
+  // Cast artist to access database fields (snake_case)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dbArtist = artist as any;
   const tenant = artist.tenants[0]; // Assuming one tenant per artist for now
   
   return (
     <div className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6">
       <div className="flex items-center space-x-4 mb-4">
-        {artist.image_url ? (
-          <img
-            src={artist.image_url}
-            alt={artist.name}
+        {dbArtist.image_url ? (
+          <Image
+            src={dbArtist.image_url}
+            alt={dbArtist.name}
+            width={48}
+            height={48}
             className="w-12 h-12 rounded-full object-cover"
           />
         ) : (
           <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-            {artist.name.charAt(0).toUpperCase()}
+            {dbArtist.name.charAt(0).toUpperCase()}
           </div>
         )}
         
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900">{artist.name}</h3>
-          <p className="text-sm text-gray-500">{artist.email}</p>
+          <h3 className="font-semibold text-gray-900">{dbArtist.name}</h3>
+          <p className="text-sm text-gray-500">{dbArtist.email}</p>
         </div>
         
         <div className={`w-3 h-3 rounded-full ${
-          artist.is_active ? 'bg-green-400' : 'bg-gray-300'
+          dbArtist.is_active ? 'bg-green-400' : 'bg-gray-300'
         }`}></div>
       </div>
 
-      {artist.genres && artist.genres.length > 0 && (
+      {dbArtist.genres && dbArtist.genres.length > 0 && (
         <div className="mb-4">
           <div className="flex flex-wrap gap-1">
-            {artist.genres.slice(0, 3).map((genre) => (
+            {dbArtist.genres.slice(0, 3).map((genre: string) => (
               <span
                 key={genre}
                 className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
@@ -216,9 +223,9 @@ function ArtistCard({ artist, agencySlug, userRole }: {
                 {genre}
               </span>
             ))}
-            {artist.genres.length > 3 && (
+            {dbArtist.genres.length > 3 && (
               <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                +{artist.genres.length - 3} more
+                +{dbArtist.genres.length - 3} more
               </span>
             )}
           </div>
@@ -227,7 +234,7 @@ function ArtistCard({ artist, agencySlug, userRole }: {
 
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-500">
-          Created {new Date(artist.created_at).toLocaleDateString()}
+          Created {new Date(dbArtist.created_at).toLocaleDateString()}
         </div>
         
         {tenant && (

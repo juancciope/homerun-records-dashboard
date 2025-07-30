@@ -1,4 +1,5 @@
 // Multi-tenant architecture types for Home Run Records
+import type { Release, DataSource } from './index';
 
 export interface Agency {
   id: string;
@@ -200,5 +201,3 @@ export interface MultiTenantDashboardData {
   dataSources: DataSource[];
 }
 
-// Re-export existing types that are still relevant
-export type { Release, DataSource } from './index';
