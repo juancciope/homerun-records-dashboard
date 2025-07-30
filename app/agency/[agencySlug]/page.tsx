@@ -123,7 +123,7 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
   }
 
   // Check if user has access to this agency
-  if (user.role !== 'super_admin' && user.agency_id !== agency.id) {
+  if (user && user.role !== 'super_admin' && user.agency_id !== agency.id) {
     redirect('/unauthorized');
   }
 
