@@ -42,11 +42,14 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
   }
 
   // Get agency data
-  let { data: agency, error: agencyError } = await supabase
+  const agencyResponse = await supabase
     .from('agencies')
     .select('*')
     .eq('slug', agencySlug)
     .single();
+  
+  let agency = agencyResponse.data;
+  const agencyError = agencyResponse.error;
 
   if (agencyError || !agency) {
     // If demo-agency doesn't exist, create it
@@ -79,7 +82,7 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
   }
 
   // Get user data with permissions
-  let { data: user, error: userError } = await supabase
+  const userResponse = await supabase
     .from('users')
     .select(`
       id,
@@ -91,6 +94,9 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
     `)
     .eq('id', session.user.id)
     .single();
+  
+  let user = userResponse.data;
+  const userError = userResponse.error;
 
   if (userError || !user) {
     // User doesn't exist in our users table, create them
