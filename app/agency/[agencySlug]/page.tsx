@@ -178,12 +178,12 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
             </div>
             
             <div className="flex items-center space-x-4">
-              {(user.role === 'agency_admin' || user.role === 'super_admin') && (
+              {user && (user.role === 'agency_admin' || user.role === 'super_admin') && (
                 <CreateArtistButton agencyId={agency.id} />
               )}
               
               <div className="text-sm text-gray-500">
-                Welcome, {user.first_name} {user.last_name}
+                Welcome, {user?.first_name} {user?.last_name}
               </div>
             </div>
           </div>
@@ -196,7 +196,7 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
             agency={agency}
             artists={(artists || []) as unknown as (MultiTenantArtist & { tenants: { id: string; slug: string; is_active: boolean }[] })[]}
             analytics={analytics}
-            userRole={user.role}
+            userRole={user?.role || 'agency_admin'}
           />
         </Suspense>
       </div>
