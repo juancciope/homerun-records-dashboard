@@ -1,6 +1,6 @@
 export interface MetricUpdate {
   type: 'streaming' | 'social' | 'fanbase' | 'production';
-  data: any;
+  data: Record<string, unknown>;
   timestamp: Date;
 }
 
@@ -9,11 +9,11 @@ export abstract class DataSourceConnector {
   protected apiSecret?: string;
   protected accessToken?: string;
   
-  constructor(config?: Record<string, any>) {
+  constructor(config?: Record<string, unknown>) {
     if (config) {
-      this.apiKey = config.apiKey;
-      this.apiSecret = config.apiSecret;
-      this.accessToken = config.accessToken;
+      this.apiKey = config.apiKey as string;
+      this.apiSecret = config.apiSecret as string;
+      this.accessToken = config.accessToken as string;
     }
   }
 
@@ -23,7 +23,7 @@ export abstract class DataSourceConnector {
   abstract getSourceType(): string;
   abstract isConnected(): boolean;
   
-  protected async makeRequest(url: string, options?: RequestInit): Promise<any> {
+  protected async makeRequest(url: string, options?: RequestInit): Promise<unknown> {
     try {
       const response = await fetch(url, {
         ...options,

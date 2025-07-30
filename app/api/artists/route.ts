@@ -17,7 +17,7 @@ export async function GET() {
   try {
     // In a real implementation, this would fetch from your database
     return NextResponse.json({ artists: mockArtists });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to fetch artists' },
       { status: 500 }
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     mockArtists.push(newArtist);
     
     return NextResponse.json({ artist: newArtist }, { status: 201 });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to create artist' },
       { status: 500 }

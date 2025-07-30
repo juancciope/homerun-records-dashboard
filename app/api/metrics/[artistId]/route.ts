@@ -106,7 +106,7 @@ const generateMockMetrics = (artistId: string): DashboardData => {
 };
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ artistId: string }> }
 ) {
   try {
@@ -116,7 +116,7 @@ export async function GET(
     const dashboardData = generateMockMetrics(artistId);
     
     return NextResponse.json(dashboardData);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to fetch metrics' },
       { status: 500 }

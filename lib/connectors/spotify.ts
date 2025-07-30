@@ -50,12 +50,12 @@ export class SpotifyConnector extends DataSourceConnector {
   }
 
   // Spotify-specific methods
-  async getArtistStats(artistId: string): Promise<any> {
+  async getArtistStats(_artistId: string): Promise<Record<string, unknown>> {
     // Implementation would fetch artist-specific stats
     return {};
   }
 
-  async getTrackStats(trackId: string): Promise<any> {
+  async getTrackStats(_trackId: string): Promise<Record<string, unknown>> {
     // Implementation would fetch track-specific stats
     return {};
   }

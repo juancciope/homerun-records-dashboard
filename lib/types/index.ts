@@ -57,7 +57,7 @@ export interface DataSource {
   type: 'spotify' | 'apple_music' | 'youtube' | 'instagram' | 'twitter' | 'tiktok' | 'facebook' | 'custom';
   status: 'connected' | 'disconnected' | 'error';
   lastSync?: Date;
-  config?: Record<string, any>;
+  config?: Record<string, unknown>;
 }
 
 export interface Release {
