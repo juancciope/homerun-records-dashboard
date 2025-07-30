@@ -77,7 +77,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 #### For MongoDB:
 ```bash
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/homerun-dashboard
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/homerun-dashboard
 ```
 
 #### API Keys for Data Sources:
