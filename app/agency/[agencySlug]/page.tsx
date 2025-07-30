@@ -42,18 +42,44 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
   }
 
   // Get agency data
-  const { data: agency, error: agencyError } = await supabase
+  let { data: agency, error: agencyError } = await supabase
     .from('agencies')
     .select('*')
     .eq('slug', agencySlug)
     .single();
 
   if (agencyError || !agency) {
-    notFound();
+    // If demo-agency doesn't exist, create it
+    if (agencySlug === 'demo-agency') {
+      const { data: newAgency, error: createError } = await supabase
+        .from('agencies')
+        .insert({
+          name: 'Home Run Records',
+          slug: 'demo-agency',
+          plan: 'professional',
+          settings: {
+            branding: { primaryColor: '#3B82F6' },
+            features: { maxArtists: 25 },
+            billing: { status: 'active' }
+          }
+        })
+        .select()
+        .single();
+
+      if (createError) {
+        console.error('Error creating demo agency:', createError);
+        notFound();
+      }
+      
+      // Use the newly created agency
+      agency = newAgency;
+    } else {
+      notFound();
+    }
   }
 
   // Get user data with permissions
-  const { data: user, error: userError } = await supabase
+  let { data: user, error: userError } = await supabase
     .from('users')
     .select(`
       id,
@@ -67,7 +93,27 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
     .single();
 
   if (userError || !user) {
-    redirect('/auth/login');
+    // User doesn't exist in our users table, create them
+    const { data: newUser, error: createUserError } = await supabase
+      .from('users')
+      .insert({
+        id: session.user.id,
+        email: session.user.email,
+        first_name: session.user.user_metadata?.first_name || session.user.email?.split('@')[0],
+        last_name: session.user.user_metadata?.last_name || '',
+        role: 'agency_admin',
+        agency_id: agency.id,
+        is_active: true
+      })
+      .select()
+      .single();
+
+    if (createUserError) {
+      console.error('Error creating user:', createUserError);
+      redirect('/auth/login');
+    }
+    
+    user = newUser;
   }
 
   // Check if user has access to this agency
