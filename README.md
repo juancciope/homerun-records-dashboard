@@ -1,8 +1,15 @@
-# Home Run Records - Artist Dashboard
+# Home Run Records - Multi-Tenant Artist Dashboard
 
-A real-time analytics dashboard for music artists, providing comprehensive insights across Music Production, Engagement, and Fan Base metrics.
+A B2B SaaS platform for music industry agencies to manage multiple artists with real-time analytics across Music Production, Engagement, and Fan Base metrics. Built with a multi-tenant architecture similar to GoHighLevel.
 
 ## Features
+
+### 🏢 Multi-Tenant SaaS Architecture
+- **Agency Management**: Agencies can manage multiple artist accounts
+- **Role-Based Access**: Super Admin, Agency Admin, Agency Member, Artist roles
+- **Data Isolation**: Complete tenant separation with Row Level Security
+- **Scalable Plans**: Starter, Professional, Enterprise with different limits
+- **White-Label Ready**: Custom branding and domains for agencies
 
 ### 📊 Three Core Analytics Realms
 
