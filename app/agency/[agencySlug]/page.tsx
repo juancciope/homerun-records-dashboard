@@ -118,10 +118,10 @@ export default async function AgencyPage({ params }: AgencyPageProps) {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                {agency.name}
+                Home Run Records
               </h1>
               <p className="text-gray-600">
-                {user.role === 'super_admin' ? 'Super Admin View' : 'Agency Dashboard'}
+                Artist Management Dashboard
               </p>
             </div>
             
